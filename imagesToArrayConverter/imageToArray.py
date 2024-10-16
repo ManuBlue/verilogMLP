@@ -7,21 +7,29 @@ scriptDir = os.path.dirname(os.path.abspath(__file__))
 
 # Paths to the source and destination folders, relative to the script's location
 sourceFolder = os.path.join(scriptDir, "images")  # Relative path to source folder
-destinationFolder = os.path.join(scriptDir, "arrays")  # Relative path to destination folder
+destinationFolder2D = os.path.join(scriptDir, "arrays")  # 2D arrays folder
+destinationFolder1D = os.path.join(scriptDir, "flattenedImages")  # 1D arrays folder
 
 # Resize dimensions
 resizeRatio = (28, 28)
 
-# Ensure the destination folder exists
-os.makedirs(destinationFolder, exist_ok=True)
+# Ensure both destination folders exist
+os.makedirs(destinationFolder2D, exist_ok=True)
+os.makedirs(destinationFolder1D, exist_ok=True)
 
-# Function to convert numpy array to a SystemVerilog array string format
-def array_to_sv_format(arr):
+# Function to convert numpy array to a 2D SystemVerilog array string format
+def array_to_sv_format_2d(arr):
     rows = []
     for row in arr:
         row_str = "'{" + ", ".join(f"{val:.1f}" for val in row) + "}"
         rows.append(row_str)
     return "'{" + ", ".join(rows) + "}"
+
+# Function to convert numpy array to a 1D flattened SystemVerilog array string format
+def array_to_sv_format_1d(arr):
+    flat_arr = arr.flatten()
+    flat_str = "'{" + ", ".join(f"{val:.1f}" for val in flat_arr) + "}"
+    return flat_str
 
 # Function to process images
 def process_images():
@@ -38,16 +46,21 @@ def process_images():
                 # Normalize the pixel values to range [0, 1]
                 normalized_img = resized_img / 255.0
 
-                # Convert the array to SystemVerilog-like format
-                sv_formatted_array = array_to_sv_format(normalized_img)
+                # Save the 2D SystemVerilog-like array
+                sv_formatted_array_2d = array_to_sv_format_2d(normalized_img)
+                array_filename_2d = os.path.splitext(filename)[0] + "_2d.txt"
+                array_path_2d = os.path.join(destinationFolder2D, array_filename_2d)
+                with open(array_path_2d, "w") as f:
+                    f.write(sv_formatted_array_2d)
+                print(f"Processed {filename} and saved 2D array as {array_filename_2d}")
 
-                # Save the formatted array as a .txt file in the destination folder
-                array_filename = os.path.splitext(filename)[0] + ".txt"
-                array_path = os.path.join(destinationFolder, array_filename)
-                with open(array_path, "w") as f:
-                    f.write(sv_formatted_array)
-
-                print(f"Processed {filename} and saved as {array_filename}")
+                # Save the 1D SystemVerilog-like array
+                sv_formatted_array_1d = array_to_sv_format_1d(normalized_img)
+                array_filename_1d = os.path.splitext(filename)[0] + "_1d.txt"
+                array_path_1d = os.path.join(destinationFolder1D, array_filename_1d)
+                with open(array_path_1d, "w") as f:
+                    f.write(sv_formatted_array_1d)
+                print(f"Processed {filename} and saved 1D array as {array_filename_1d}")
             else:
                 print(f"Failed to load {filename}")
 
