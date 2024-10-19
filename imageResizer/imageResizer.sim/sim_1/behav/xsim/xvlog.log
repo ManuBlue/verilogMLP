@@ -1,0 +1,5 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/vivadoRelated/project_11/project_11.srcs/sim_1/new/testBench.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module test_resizer
+WARNING: [VRFC 10-3824] variable 'inputImage' must explicitly be declared as automatic or static [D:/vivadoRelated/project_11/project_11.srcs/sim_1/new/testBench.sv:57]
+WARNING: [VRFC 10-3824] variable 'desiredM' must explicitly be declared as automatic or static [D:/vivadoRelated/project_11/project_11.srcs/sim_1/new/testBench.sv:59]
+WARNING: [VRFC 10-3824] variable 'desiredN' must explicitly be declared as automatic or static [D:/vivadoRelated/project_11/project_11.srcs/sim_1/new/testBench.sv:60]

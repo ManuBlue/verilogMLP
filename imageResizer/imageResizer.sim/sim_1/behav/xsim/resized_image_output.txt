@@ -1,0 +1,4 @@
+Original Image Dimensions: 4 x 4
+Resized Image Dimensions: 2 x 2
+Resized Image (Verilog Array Syntax):
+'{'{1.0, 3.0}, '{9.0, 11.0}};
