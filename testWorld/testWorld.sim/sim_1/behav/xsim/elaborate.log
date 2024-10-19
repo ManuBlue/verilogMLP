@@ -8,10 +8,4 @@ Pass Through NonSizing Optimizer
 WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/testWorld/testWorld.srcs/sim_1/new/myTB.sv:92]
 WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/testWorld/testWorld.srcs/sim_1/new/myTB.sv:93]
 Completed static elaboration
-Starting simulation data flow analysis
-Completed simulation data flow analysis
-Time Resolution for simulation is 1ps
-Compiling package xil_defaultlib.$unit_myTB_sv
-Compiling module xil_defaultlib.myTB
-Compiling module xil_defaultlib.glbl
-Built simulation snapshot myTB_behav
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel

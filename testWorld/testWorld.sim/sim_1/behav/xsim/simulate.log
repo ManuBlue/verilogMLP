@@ -1,0 +1,13 @@
+Time resolution is 1 ps
+Output of Layer 2:
+Output[0] = 4.360446
+Output[1] = -7.002149
+Output[2] = 12.051459
+Output[3] = 1.742738
+Output[4] = -19.117114
+Output[5] = -5.773205
+Output[6] = -6.188828
+Output[7] = -3.785259
+Output[8] = 3.370362
+Output[9] = -8.794634
+$finish called at time : 0 fs : File "D:/Projects/verilogMLP/testWorld/testWorld.srcs/sim_1/new/myTB.sv" Line 113
