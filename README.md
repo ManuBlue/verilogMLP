@@ -1,2 +1,2 @@
 # verilogMLP
- Implementing multi layer perceptrion in verilog
+ Implementing multi layer perceptron in verilog
