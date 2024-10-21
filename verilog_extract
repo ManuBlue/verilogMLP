@@ -1,118 +1,148 @@
 class DigitExtractor;
-    // Properties
-    bit [7:0] binary_array[];  // 2D binary array representing the image
-    int num_rows, num_cols;    // Dimensions of the binary array
-    bit visited[][];           // 2D array to mark visited pixels
-    bit [7:0] digit_images[][]; // 2D array to hold extracted digit images
-    int digit_count;
-
-    // Constructor
-    function new(bit [7:0] binary_array[], int rows, int cols);
-        this.binary_array = binary_array;
-        this.num_rows = rows;
-        this.num_cols = cols;
-        this.digit_count = 0;
-        this.visited = new[rows][cols];
-        // Initialize visited array
-        foreach (this.visited[i]) begin
-            this.visited[i] = 0;
+    
+    // Input 2D real array
+    real normalized_array[][];
+    
+    // Binary array and visited array
+    bit binary_array[][];
+    bit visited[][];
+    real digit_image[][]; 
+    // Output variable to store extracted digits
+    real digit_images[$][][];
+    
+    // Constructor: Initializes normalized array and processes it
+    function new(input real input_array[][]);
+        int m, n;
+        this.normalized_array = input_array;
+        
+        // Get dimensions of the normalized array
+        m = $size(input_array, 0);
+        n = $size(input_array, 1);
+        
+        // Initialize binary_array and visited arrays
+        binary_array = new[m];    // Allocate rows first
+        visited = new[m];         // Allocate rows for visited array
+        
+        for (int i = 0; i < m; i++) begin
+            binary_array[i] = new[n];   // Allocate columns for each row
+            visited[i] = new[n];        // Allocate columns for each row in visited array
+        end
+        
+        // Convert normalized array to binary array
+        for (int i = 0; i < m; i++) begin
+            for (int j = 0; j < n; j++) begin
+                binary_array[i][j] = (normalized_array[i][j] > 0.7) ? 0 : 1;
+                visited[i][j] = 0;
+            end
         end
     endfunction
+    
+    // Function to extract a digit
+    function void extract_digit( input int x, input int y);
+        bit found;
+        int directions[4][2] = '{ {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
 
-    // Method to extract digits
-    function void extract_digits();
-        for (int i = 0; i < num_rows; i++) begin
-            for (int j = 0; j < num_cols; j++) begin
+        int queue[$][2];
+        int coords[$][2];
+        int dx, dy;
+        int cx, cy;
+        int nx, ny;
+        int x_min, y_min, x_max, y_max;
+
+        // Add initial pixel to queue
+        queue.push_back({x, y});
+
+        // While queue is not empty
+        while (queue.size() > 0) begin
+            int temp[2]; 
+            
+            // Pop the front element from the queue
+            temp = queue.pop_front(); 
+            
+            // Assign the individual elements from temp to cx and cy
+            cx = temp[0];
+            cy = temp[1];
+            
+            if (visited[cx][cy])
+                continue;
+                
+            visited[cx][cy] = 1;
+            coords.push_back({cx, cy});
+            
+            // Check neighbors: up, down, left, right
+            for (int d = 0; d < 4; d++) begin
+                dx = directions[d][0];
+                dy = directions[d][1];
+                nx = cx + dx;
+                ny = cy + dy;
+            
+                if (nx >= 0 && nx < $size(binary_array, 0) &&
+                    ny >= 0 && ny < $size(binary_array, 1) &&
+                    binary_array[nx][ny] == 1 && !visited[nx][ny]) begin
+                    queue.push_back({nx, ny});
+                end
+            end
+        end
+
+        // Find bounding box
+        if (coords.size() > 0) begin
+            x_min = coords[0][0];
+            y_min = coords[0][1];
+            x_max = 0;
+            y_max = 0;
+
+            foreach (coords[i]) begin
+                x_min = (coords[i][0] < x_min) ? coords[i][0] : x_min;
+                y_min = (coords[i][1] < y_min) ? coords[i][1] : y_min;
+                x_max = (coords[i][0] > x_max) ? coords[i][0] : x_max;
+                y_max = (coords[i][1] > y_max) ? coords[i][1] : y_max;
+            end
+            
+ // Declare a dynamic array (jagged array)
+
+// Allocate rows for the digit image
+this.digit_image = new[x_max - x_min + 1];
+
+// Now allocate columns for each row
+for (int i = 0; i < x_max - x_min + 1; i++) begin
+    this.digit_image[i] = new[y_max - y_min + 1];
+end
+            
+
+            // Fill the digit image with corresponding values from normalized_array
+            for (int i = x_min; i <= x_max; i++) begin
+                for (int j = y_min; j <= y_max; j++) begin
+                    this.digit_image[i - x_min][j - y_min] = normalized_array[i][j];
+                end
+            end
+            
+            // Check if the digit image contains any values less than 0.99
+            found = 0;
+            for (int i = 0; i < $size(digit_image, 0); i++) begin
+                for (int j = 0; j < $size(digit_image, 1); j++) begin
+                    if (this.digit_image[i][j] < 0.99) begin
+                        found = 1;
+                        break;
+                    end
+                end
+                if (found) break;
+            end
+            
+            // Add the digit image to digit_images array if it's valid
+            if (found) begin
+                digit_images.push_back(digit_image);
+            end
+        end
+    endfunction
+    
+    // Process the binary array to find and extract digits
+    function void process_image();
+        for (int i = 0; i < $size(binary_array, 0); i++) begin
+            for (int j = 0; j < $size(binary_array, 1); j++) begin
                 if (binary_array[i][j] == 1 && !visited[i][j]) begin
                     extract_digit(i, j);
                 end
             end
         end
     endfunction
-
-    // Recursive method to extract a single digit
-    function void extract_digit(int x, int y);
-        int x_min, x_max, y_min, y_max;
-        x_min = x_max = x;
-        y_min = y_max = y;
-
-        // Using a stack for DFS
-        int stack[][] = new[int'(num_rows * num_cols)][2]; // stack to hold coordinates
-        int top = 0;
-
-        stack[top] = {x, y};
-        top++;
-
-        while (top > 0) begin
-            top--;
-            x = stack[top][0];
-            y = stack[top][1];
-
-            if (visited[x][y]) continue;
-            visited[x][y] = 1;
-
-            // Update bounds
-            if (x < x_min) x_min = x;
-            if (x > x_max) x_max = x;
-            if (y < y_min) y_min = y;
-            if (y > y_max) y_max = y;
-
-            // Check 4-neighbors
-            foreach ({{-1, 0}, {1, 0}, {0, -1}, {0, 1}} neighbor) begin
-                int nx = x + neighbor[0];
-                int ny = y + neighbor[1];
-
-                if (nx >= 0 && nx < num_rows && ny >= 0 && ny < num_cols && 
-                    binary_array[nx][ny] == 1 && !visited[nx][ny]) begin
-                    stack[top] = {nx, ny};
-                    top++;
-                end
-            end
-        end
-
-        // Store the extracted digit image
-        store_digit_image(x_min, x_max, y_min, y_max);
-    endfunction
-
-    // Store the digit image based on coordinates
-    function void store_digit_image(int x_min, int x_max, int y_min, int y_max);
-        bit [7:0] digit_image[][] = new[x_max - x_min + 1][y_max - y_min + 1];
-        
-        for (int i = x_min; i <= x_max; i++) begin
-            for (int j = y_min; j <= y_max; j++) begin
-                digit_image[i - x_min][j - y_min] = binary_array[i][j];
-            end
-        end
-        
-        digit_images[digit_count] = digit_image;
-        digit_count++;
-    endfunction
-
-    // Display the extracted digits (for simulation purposes)
-    function void display_digits();
-        for (int i = 0; i < digit_count; i++) begin
-            $display("Digit %0d:", i);
-            // Display logic for each digit image
-            // (For example, printing the image data in some way)
-        end
-    endfunction
 endclass
-
-// Example usage
-module test;
-    initial begin
-        // Sample binary array
-        bit [7:0] binary_array[5][5] = '{ 
-            '{0, 0, 0, 0, 0},
-            '{0, 1, 1, 0, 0},
-            '{0, 1, 1, 0, 0},
-            '{0, 0, 0, 1, 1},
-            '{0, 0, 0, 1, 1}
-        };
-        
-        // Instantiate the DigitExtractor
-        DigitExtractor extractor = new(binary_array, 5, 5);
-        extractor.extract_digits();
-        extractor.display_digits();
-    end
-endmodule
