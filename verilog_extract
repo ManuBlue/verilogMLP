@@ -1,0 +1,118 @@
+class DigitExtractor;
+    // Properties
+    bit [7:0] binary_array[];  // 2D binary array representing the image
+    int num_rows, num_cols;    // Dimensions of the binary array
+    bit visited[][];           // 2D array to mark visited pixels
+    bit [7:0] digit_images[][]; // 2D array to hold extracted digit images
+    int digit_count;
+
+    // Constructor
+    function new(bit [7:0] binary_array[], int rows, int cols);
+        this.binary_array = binary_array;
+        this.num_rows = rows;
+        this.num_cols = cols;
+        this.digit_count = 0;
+        this.visited = new[rows][cols];
+        // Initialize visited array
+        foreach (this.visited[i]) begin
+            this.visited[i] = 0;
+        end
+    endfunction
+
+    // Method to extract digits
+    function void extract_digits();
+        for (int i = 0; i < num_rows; i++) begin
+            for (int j = 0; j < num_cols; j++) begin
+                if (binary_array[i][j] == 1 && !visited[i][j]) begin
+                    extract_digit(i, j);
+                end
+            end
+        end
+    endfunction
+
+    // Recursive method to extract a single digit
+    function void extract_digit(int x, int y);
+        int x_min, x_max, y_min, y_max;
+        x_min = x_max = x;
+        y_min = y_max = y;
+
+        // Using a stack for DFS
+        int stack[][] = new[int'(num_rows * num_cols)][2]; // stack to hold coordinates
+        int top = 0;
+
+        stack[top] = {x, y};
+        top++;
+
+        while (top > 0) begin
+            top--;
+            x = stack[top][0];
+            y = stack[top][1];
+
+            if (visited[x][y]) continue;
+            visited[x][y] = 1;
+
+            // Update bounds
+            if (x < x_min) x_min = x;
+            if (x > x_max) x_max = x;
+            if (y < y_min) y_min = y;
+            if (y > y_max) y_max = y;
+
+            // Check 4-neighbors
+            foreach ({{-1, 0}, {1, 0}, {0, -1}, {0, 1}} neighbor) begin
+                int nx = x + neighbor[0];
+                int ny = y + neighbor[1];
+
+                if (nx >= 0 && nx < num_rows && ny >= 0 && ny < num_cols && 
+                    binary_array[nx][ny] == 1 && !visited[nx][ny]) begin
+                    stack[top] = {nx, ny};
+                    top++;
+                end
+            end
+        end
+
+        // Store the extracted digit image
+        store_digit_image(x_min, x_max, y_min, y_max);
+    endfunction
+
+    // Store the digit image based on coordinates
+    function void store_digit_image(int x_min, int x_max, int y_min, int y_max);
+        bit [7:0] digit_image[][] = new[x_max - x_min + 1][y_max - y_min + 1];
+        
+        for (int i = x_min; i <= x_max; i++) begin
+            for (int j = y_min; j <= y_max; j++) begin
+                digit_image[i - x_min][j - y_min] = binary_array[i][j];
+            end
+        end
+        
+        digit_images[digit_count] = digit_image;
+        digit_count++;
+    endfunction
+
+    // Display the extracted digits (for simulation purposes)
+    function void display_digits();
+        for (int i = 0; i < digit_count; i++) begin
+            $display("Digit %0d:", i);
+            // Display logic for each digit image
+            // (For example, printing the image data in some way)
+        end
+    endfunction
+endclass
+
+// Example usage
+module test;
+    initial begin
+        // Sample binary array
+        bit [7:0] binary_array[5][5] = '{ 
+            '{0, 0, 0, 0, 0},
+            '{0, 1, 1, 0, 0},
+            '{0, 1, 1, 0, 0},
+            '{0, 0, 0, 1, 1},
+            '{0, 0, 0, 1, 1}
+        };
+        
+        // Instantiate the DigitExtractor
+        DigitExtractor extractor = new(binary_array, 5, 5);
+        extractor.extract_digits();
+        extractor.display_digits();
+    end
+endmodule
