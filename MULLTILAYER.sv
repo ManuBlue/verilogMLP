@@ -77,3 +77,45 @@ class cnn_model;
         end
     endfunction
 endclass
+
+
+
+
+// testbench
+module test_conv2D;
+    // Define parameters
+    integer inputHeight = 3;
+    integer inputWidth = 3;
+    integer kernelHeight = 2;
+    integer kernelWidth = 2;
+    integer stride = 1;
+    integer noOfKernels = 2; // Set the number of kernels to 2
+
+    // Testbench variables
+    real inputMat[3][3] = '{{1.0, 2.0, 3.0}, 
+                           {4.0, 5.0, 6.0}, 
+                           {7.0, 8.0, 9.0}};
+    
+    // Define two kernels
+    real kernels[2][2][2] = '{{{1.0, 1.0}, 
+                               {1.0, -1.0}}, // First kernel
+                              {{0.0, 1.0}, 
+                               {1.0, 0.0}}}; // Second kernel
+
+    // Instantiate CNN model class
+    cnn_model conv = new(inputHeight, inputWidth, kernelHeight, kernelWidth, stride, noOfKernels);
+
+    initial begin
+        // Set input matrix and kernels
+        conv.setInputAndKernel(inputMat, kernels);
+
+        // Apply the convolution
+        conv.apply();
+
+        // Display the output for each kernel
+        for (int k = 0; k < noOfKernels; k++) begin
+            conv.displayOutput(k);
+        end
+    end
+endmodule
+
