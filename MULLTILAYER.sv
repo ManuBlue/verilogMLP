@@ -161,7 +161,7 @@ class cnn_model;
         end
         end
     endfunction
-    function setOut(input integer k , input real o[][]);
+    function void setOut(input integer k , input real o[][]);
         for(int i = 0; i < outputHeight ; i ++) begin
             for (int j =0 ; j < outputWidth ;  j ++) begin
                 this.outputMat[k][i][j] = o[i][j];
@@ -171,7 +171,10 @@ class cnn_model;
     function void apply();
         for(int k = 0; k < noOfKernels ; k++) begin
               Conv2D conv = new(inputHeight, inputWidth, kernelHeight, kernelWidth, stride);
-              conv.setInputAndKernel(inputMat, kernel[k]);
+              conv.setInputAndKernel(this.inputMat, this.kernel[k]);
+              conv.applyConvolution();
+              $write("%0.2f ", inputMat[0][0]);
+//              conv.displayOutput();
               setOut(k,conv.outputMat);            
         end 
     endfunction
@@ -224,4 +227,3 @@ real kernels[1][2][2] = '{'{'{1.0, 1.0}, '{1.0, -1.0}}};
         end
     end
 endmodule
-
