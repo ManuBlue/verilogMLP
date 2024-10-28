@@ -1,13 +1,12 @@
 class cnn_model;
-    integer noOfKernels;              // Number of kernels (filters)
-    integer inputHeight, inputWidth;  // Dimensions of the input matrix
+    integer noOfKernels;              
+    integer inputHeight, inputWidth;  
     integer kernelHeight, kernelWidth;
-    integer stride; // Dimensions of each kernel
-    real inputMat[][];                // Input matrix
-    real kernel[][][];                // 3D array of kernels (noOfKernels)
+    integer stride;
+    real inputMat[][];               
+    real kernel[][][];               
     real outputMat[][][];
-    integer outputWidth, outputHeight;             // 3D array of output matrices (noOfKernels)
-    // Constructor
+    integer outputWidth, outputHeight;             
     function new(input integer inputHeight, input integer inputWidth, 
                  input integer kernelHeight, input integer kernelWidth, 
                  input integer stride, input integer noOfKernels);
@@ -40,7 +39,6 @@ class cnn_model;
         end
     endfunction
     function void setInputAndKernel(input real inputMat[][], input real kernel[][][]);
-        // Set the input matrix
         for (int i = 0; i < inputHeight; i++) begin
             for (int j = 0; j < inputWidth; j++) begin
                 this.inputMat[i][j] = inputMat[i][j];
@@ -75,7 +73,7 @@ class cnn_model;
             for (int j = 0; j < outputWidth; j++) begin
                 $write("%0.2f ", outputMat[k][i][j]);
             end
-            $display("");  // New line
+            $display("");  
         end
     endfunction
 endclass
