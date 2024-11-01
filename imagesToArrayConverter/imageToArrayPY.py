@@ -11,7 +11,7 @@ destinationFolder2DPy = os.path.join(scriptDir, "python2DArrays")  # 2D Python a
 destinationFolder1DPy = os.path.join(scriptDir, "python1DArrays")  # 1D Python arrays folder
 
 # Resize dimensions
-resizeRatio = (28, 28)
+resizeRatio = (64, 64)
 
 # Ensure both destination folders exist
 os.makedirs(destinationFolder2DPy, exist_ok=True)

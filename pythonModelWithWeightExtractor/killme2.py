@@ -58,10 +58,10 @@ trainLoader = DataLoader(tumorDataset, batch_size=32, shuffle=True)
 class TumorCNN(nn.Module):
     def __init__(self):
         super(TumorCNN, self).__init__()
-        self.conv1 = nn.Conv2d(1, 4, kernel_size=3, stride=1, padding=1)  # Convolutional layer with 4 filters
-        self.pool = nn.MaxPool2d(8, 8)  # Increased pooling size
-        self.fc1 = nn.Linear(4 * 8 * 8, 64)  # Adjusted for 64x64 image input
-        self.fc2 = nn.Linear(64, 4)
+        self.conv1 = nn.Conv2d(1, 4, kernel_size=3, stride=1, padding=0)  # Output: 4 x 62 x 62
+        self.pool = nn.MaxPool2d(8, 8)  # Output: 4 x 7 x 7
+        self.fc1 = nn.Linear(4 * 7 * 7, 64)  # Adjusted input features for fully connected layer
+        self.fc2 = nn.Linear(64, 4)  # Output layer
 
     def forward(self, x):
         x = self.pool(torch.relu(self.conv1(x)))  # Apply convolution and pooling

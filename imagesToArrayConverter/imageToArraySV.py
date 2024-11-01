@@ -11,7 +11,7 @@ destinationFolder2D = os.path.join(scriptDir, "arrays")  # 2D arrays folder
 destinationFolder1D = os.path.join(scriptDir, "flattenedImages")  # 1D arrays folder
 
 # Resize dimensions
-resizeRatio = (28, 28)
+resizeRatio = (64, 64)
 
 # Ensure both destination folders exist
 os.makedirs(destinationFolder2D, exist_ok=True)
