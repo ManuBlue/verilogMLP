@@ -1,0 +1,17 @@
+Time resolution is 1 ps
+Feature map gen test
+Applying 2D conv
+Applying 2D conv
+Applying 2D conv
+Applying 2D conv
+=== Bias Test ===
+=== ReLU Activation Test ===
+=== Max Pooling Test ===
+=== Flattening Test ===
+=== Linear layer 1===
+Relu 2
+=== Linear layer 2===
+=== Softmax layer ===
+Softmax layer output:
+0.0000052306446853715532713333808 percent0.0003458180504412069989836342465 percent4.0018745777497821691781609843019 percent95.9977743735551030113128945231438 percent
+$finish called at time : 0 fs : File "D:/Projects/verilogMLP/project_1/project_1.srcs/sim_1/new/test3.sv" Line 83

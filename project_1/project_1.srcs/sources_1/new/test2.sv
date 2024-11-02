@@ -527,7 +527,31 @@ class ReLu1D;
     
 endclass
 
+class softmax;
+    real size;
+    real outputs[]; 
+    function new(input integer size);
+        this.size = size;
+        this.outputs = new[size];
+    endfunction
+    function void apply(input real inputArr[]);
+        real total;
+        total = 0;
+        for (int j = 0; j < this.size; j++) begin
+            total = total + $exp(inputArr[j]);
+        end
+        for (int j = 0; j < this.size; j++) begin
+            this.outputs[j] = $exp(inputArr[j])/total;
+        end
+    endfunction
+    function void display();
+        $display("Softmax layer output:");
+        for (int i = 0; i < this.size; i++) begin
+            $write("%0.31f ", this.outputs[i] * 100,"percent");
+        end
+        $display(""); 
+    endfunction
+endclass
 module test2(
-
-    );
+);
 endmodule

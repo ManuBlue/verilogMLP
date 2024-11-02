@@ -5,8 +5,8 @@ Running: E:/Vivado/2024.1/bin/unwrapped/win64.o/xelab.exe --incr --debug typical
 Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/project_1/project_1.srcs/sim_1/new/test3.sv:69]
-WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/project_1/project_1.srcs/sim_1/new/test3.sv:76]
+WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/project_1/project_1.srcs/sim_1/new/test3.sv:70]
+WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/project_1/project_1.srcs/sim_1/new/test3.sv:77]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis
