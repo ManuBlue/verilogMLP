@@ -1,6 +1,0 @@
-Time resolution is 1 ps
-No tumor : 5.23064e-06 percent
-Glioma tumor: 0.000345818 percent
-Meningioma tumor : 4.00187 percent
-Pituitary : 95.9978 percent
-$finish called at time : 105 ns : File "D:/Projects/verilogMLP/MLPFinal/MLPFinal.srcs/sim_1/new/testbench.sv" Line 52

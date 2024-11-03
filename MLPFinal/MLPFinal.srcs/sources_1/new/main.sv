@@ -281,7 +281,7 @@ endfunction
 
 
 endclass
-
+ 
 
 
 class ReLu;
@@ -563,26 +563,26 @@ class resizer;
         this.m = m;
         this.n = n;
 
-        // Initialize resizedImage array
+
         this.resizedImage = new[m];
         for (int i = 0; i < m; i++) begin
             this.resizedImage[i] = new[n];
         end
        
-        // Initialize image array
+   
         this.image = new[this.originalM];
         for (int i = 0; i < this.originalM; i++) begin
-            this.image[i] = new[this.originalN]; // Correctly initialize each row
+            this.image[i] = new[this.originalN];
         end
 
-        // Copy input image to internal image array
+        
         for (int i = 0; i < this.originalM; i = i+1) begin
             for (int j = 0; j < this.originalN; j = j+1) begin
                 this.image[i][j] = image[i][j];
             end
         end
 
-        this.mScale = real'(this.originalM) / real'(m); // Use real division for scaling
+        this.mScale = real'(this.originalM) / real'(m);
         this.nScale = real'(this.originalN) / real'(n);
     endfunction
 

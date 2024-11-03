@@ -12,6 +12,12 @@ def pyToSV(x):
     xStr = "'{" + ",".join(map(str, x)) + "}"
     return xStr
 
+# Function to convert 2D Python array to SystemVerilog array format
+def twoDToSv(temp):
+    for i, x in enumerate(temp):
+        temp[i] = pyToSV(x)
+    return pyToSV(temp)
+
 # Read the input from the file
 with open(inputFilePath, "r") as file:
     temp = file.read()
@@ -20,7 +26,7 @@ with open(inputFilePath, "r") as file:
 temp = eval(temp)
 
 # Convert the Python list to SystemVerilog array format
-temp = pyToSV(temp)
+temp = twoDToSv(temp)
 
 # Write the converted array to the output file
 with open(outputFilePath, "w") as file:

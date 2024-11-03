@@ -88,7 +88,7 @@ void sensitize(char *dp)
 
 void simulate(char *dp)
 {
-iki_register_root_pointers(11, 40336, 6,0,0,40520, 13,0,0,41256, 12,0,0,41808, 15,0,0,39968, 5,2, 0, 0,40152, 16,0,0,40888, 9,0,0,41072, 11,0,0,40704, 10,0,0,41624, 12,0,0,41440, 14,0,0) ; 
+iki_register_root_pointers(11, 40520, 13,0,0,40704, 10,0,0,41256, 12,0,0,40336, 6,0,0,41072, 11,0,0,41624, 12,0,0,40152, 16,0,0,39968, 5,2, 0, 0,40888, 9,0,0,41808, 15,0,0,41440, 14,0,0) ; 
 		iki_schedule_processes_at_time_zero(dp, "xsim.dir/testbench_behav/xsim.reloc");
 	// Initialize Verilog nets in mixed simulation, for the cases when the value at time 0 should be propagated from the mixed language Vhdl net
 	iki_execute_processes();

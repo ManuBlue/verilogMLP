@@ -5,9 +5,9 @@ Running: E:/Vivado/2024.1/bin/unwrapped/win64.o/xelab.exe --incr --debug typical
 Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-9525] querying system functions are only allowed on the first variable-size dimension [D:/Projects/verilogMLP/MLPFinal/MLPFinal.srcs/sources_1/new/main.sv:570]
+WARNING: [VRFC 10-9525] querying system functions are only allowed on the first variable-size dimension [D:/Projects/verilogMLP/MLPFinal/MLPFinal.srcs/sources_1/new/main.sv:562]
+WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/MLPFinal/MLPFinal.srcs/sources_1/new/main.sv:652]
 WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/MLPFinal/MLPFinal.srcs/sources_1/new/main.sv:660]
-WARNING: [VRFC 10-3597] non-void function 'setWeights' called as a task without void casting [D:/Projects/verilogMLP/MLPFinal/MLPFinal.srcs/sources_1/new/main.sv:668]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis

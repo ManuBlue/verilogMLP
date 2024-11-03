@@ -21,6 +21,7 @@ temp = eval(temp)
 
 # Convert the Python list to SystemVerilog array format
 temp = pyToSV(temp)
+print(len(temp))
 
 # Write the converted array to the output file
 with open(outputFilePath, "w") as file:
