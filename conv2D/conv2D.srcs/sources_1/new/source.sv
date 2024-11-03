@@ -1,14 +1,14 @@
 class Conv2D;
-    // Parameters
-    integer inputHeight, inputWidth;  // Dimensions of the input matrix
-    integer kernelHeight, kernelWidth; // Dimensions of the kernel
-    integer stride;  // Stride of convolution
-    integer outputHeight, outputWidth; // Dimensions of the output matrix
+    
+    integer inputHeight, inputWidth;  
+    integer kernelHeight, kernelWidth; 
+    integer stride;  
+    integer outputHeight, outputWidth; 
     real inputMat[][];
     real kernel[][];
     real outputMat[][];
 
-    // Constructor: Initialize the convolution layer
+    
     function new(input integer inputHeight, input integer inputWidth, 
                  input integer kernelHeight, input integer kernelWidth, 
                  input integer stride);
@@ -18,11 +18,11 @@ class Conv2D;
         this.kernelWidth = kernelWidth;
         this.stride = stride;
 
-        // Calculate and store output size
+        
         this.outputHeight = (inputHeight - kernelHeight) / stride + 1;
         this.outputWidth = (inputWidth - kernelWidth) / stride + 1;
 
-        // Allocate memory for input, kernel, and output
+        
         this.inputMat = new[inputHeight];
         for (int i = 0; i < inputHeight; i++) begin
             this.inputMat[i] = new[inputWidth];
@@ -39,16 +39,16 @@ class Conv2D;
         end
     endfunction
 
-    // Function to set input matrix and kernel values
+    
     function void setInputAndKernel(input real inputMat[][], input real kernel[][]);
-        // Set the input matrix
+        
         for (int i = 0; i < inputHeight; i++) begin
             for (int j = 0; j < inputWidth; j++) begin
                 this.inputMat[i][j] = inputMat[i][j];
             end
         end
 
-        // Set the kernel
+        
         for (int i = 0; i < kernelHeight; i++) begin
             for (int j = 0; j < kernelWidth; j++) begin
                 this.kernel[i][j] = kernel[i][j];
@@ -56,11 +56,11 @@ class Conv2D;
         end
     endfunction
 
-    // Convolution function (similar to your Python implementation)
+    
     function void applyConvolution();
         real sum;
 
-        // Perform 2D convolution
+        
         for (int i = 0; i < outputHeight; i++) begin
             for (int j = 0; j < outputWidth; j++) begin
                 sum = 0;
@@ -74,14 +74,14 @@ class Conv2D;
         end
     endfunction
 
-    // Function to display the output matrix
+    
     function void displayOutput();
         $display("Output Matrix:");
         for (int i = 0; i < outputHeight; i++) begin
             for (int j = 0; j < outputWidth; j++) begin
                 $write("%0.2f ", outputMat[i][j]);
             end
-            $display("");  // New line
+            $display("");  
         end
     endfunction
 
